@@ -109,7 +109,13 @@ module SoundCloud
       store_options(options)
       raise ArgumentError, 'client_id and client_secret is required to retrieve an access_token' if client_id.nil? || client_secret.nil?
 
-      params = if options_for_refresh_flow_present?
+      params = if options_for_code_flow_present?
+        {
+          :grant_type => 'authorization_code',
+          :redirect_uri => @options[:redirect_uri],
+          :code => @options[:code],
+        }
+      elsif options_for_refresh_flow_present?
         {
           :grant_type => 'refresh_token',
           :refresh_token => refresh_token,
@@ -120,12 +126,6 @@ module SoundCloud
           :grant_type => 'password',
           :username => @options[:username],
           :password => @options[:password],
-        }
-      elsif options_for_code_flow_present?
-        {
-          :grant_type => 'authorization_code',
-          :redirect_uri => @options[:redirect_uri],
-          :code => @options[:code],
         }
       elsif client_secret
         { :grant_type => 'client_credentials' }
