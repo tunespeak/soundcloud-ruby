@@ -2,7 +2,7 @@ require 'soundcloud/version'
 
 module SoundCloud
   class Client
-    include HTTMultiParty
+    include HTTParty
     USER_AGENT            = "SoundCloud Ruby Wrapper #{SoundCloud::VERSION}"
     CLIENT_ID_PARAM_NAME  = :client_id
     API_SUBHOST           = 'api'
